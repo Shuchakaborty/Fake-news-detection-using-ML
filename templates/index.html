@@ -7,116 +7,104 @@
   <title>Fake News Detector</title>
   <style>
     body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #74ABE2, #5563DE);
-      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #6e8efb, #a777e3);
       height: 100vh;
+      margin: 0;
       display: flex;
       justify-content: center;
       align-items: center;
     }
 
     .container {
-      background: #ffffff;
-      padding: 40px 50px;
+      background: #fff;
+      padding: 40px;
       border-radius: 20px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.2);
       text-align: center;
-      width: 500px;
-      max-width: 90%;
+      width: 400px;
+      animation: fadeIn 1.2s ease-in-out;
     }
 
     h1 {
-      color: #333;
+      color: #4b0082;
       margin-bottom: 20px;
-      font-size: 28px;
     }
 
     textarea {
       width: 100%;
-      height: 120px;
-      border: 2px solid #ccc;
+      height: 150px;
+      border: 2px solid #6e8efb;
       border-radius: 10px;
       padding: 10px;
       font-size: 16px;
       resize: none;
       outline: none;
-      transition: border-color 0.3s ease;
+      transition: all 0.3s ease;
     }
 
     textarea:focus {
-      border-color: #5563DE;
+      border-color: #a777e3;
+      box-shadow: 0 0 10px rgba(166, 119, 227, 0.4);
     }
 
     button {
       margin-top: 20px;
-      padding: 12px 35px;
-      background: #5563DE;
-      color: white;
+      background-color: #6e8efb;
       border: none;
+      color: white;
+      padding: 12px 30px;
       border-radius: 10px;
-      cursor: pointer;
       font-size: 16px;
+      cursor: pointer;
       transition: all 0.3s ease;
     }
 
     button:hover {
-      background: #3742fa;
-      transform: scale(1.05);
+      background-color: #a777e3;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
 
     .result {
-      font-size: 22px;
       margin-top: 25px;
-      padding: 10px;
-      border-radius: 10px;
-      color: white;
-      font-weight: bold;
-      transition: 0.3s ease;
+      font-size: 20px;
+      font-weight: 600;
     }
 
-    .result.true {
-      background-color: #2ecc71; /* Green for real news */
+    .real {
+      color: green;
     }
 
-    .result.fake {
-      background-color: #e74c3c; /* Red for fake news */
+    .fake {
+      color: red;
     }
 
-    footer {
-      margin-top: 25px;
-      color: #777;
-      font-size: 14px;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>📰 Fake News Detection</h1>
-    <form method="post" id="newsForm">
-      <textarea id="newsText" name="news_text" placeholder="Paste news text here..."></textarea><br>
+    <form method="POST">
+      <textarea name="news_text" placeholder="Paste news text here..." required></textarea><br>
       <button type="submit">Check</button>
     </form>
 
     {% if prediction %}
-      <div id="resultBox" class="result {% if prediction == 'Real' %}true{% else %}fake{% endif %}">
-        Prediction: <strong>{{ prediction }}</strong>
+      <div class="result">
+        {% if prediction == "REAL" %}
+          <p class="real">✅ The news is REAL</p>
+        {% elif prediction == "FAKE" %}
+          <p class="fake">❌ The news is FAKE</p>
+        {% else %}
+          <p>{{ prediction }}</p>
+        {% endif %}
       </div>
     {% endif %}
   </div>
-
-  <script>
-    // Hide previous prediction when user types new text
-    const textArea = document.getElementById("newsText");
-    const resultBox = document.getElementById("resultBox");
-
-    if (textArea && resultBox) {
-      textArea.addEventListener("input", () => {
-        resultBox.style.display = "none";
-      });
-    }
-  </script>
 </body>
 </html>
-
-
